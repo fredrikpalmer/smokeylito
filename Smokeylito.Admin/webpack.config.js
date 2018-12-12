@@ -3,11 +3,13 @@ var webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (env, argv) => {
   console.log('Building client for: ' + argv.mode);
 
-  return {
+  const clientConfig =  {
+    devtool: argv.mode === 'production' ? 'source-map' : 'eval-source-map',
     entry: {
       index: './client/index.tsx',
     },
@@ -17,14 +19,16 @@ module.exports = (env, argv) => {
         // include all types of chunks
         chunks: 'all',
       },
-      minimizer: argv.mode === 'production' ? [new UglifyJsPlugin()] : []
     },
     plugins: [
       new webpack.AutomaticPrefetchPlugin(),
       new MiniCssExtractPlugin({
         filename: argv.mode === 'production' ? '[name].[hash].css' : '[name].css',
       }),
-      new BundleAnalyzerPlugin()
+      new HtmlWebpackPlugin({  // Also generate a test.html
+        filename: '../index.html',
+        template: './public/index.html'
+      })
     ],
     module: {
       rules: [
@@ -45,4 +49,16 @@ module.exports = (env, argv) => {
       path: path.resolve(__dirname, './public/dist')
     },
   };
+
+  if(env && env.analyze){
+    clientConfig.plugins.push(new BundleAnalyzerPlugin());
+  }
+
+  if(argv.mode === 'production'){
+    clientConfig.plugins.push(new UglifyJsPlugin({
+      sourceMap: true
+    }));
+  }
+
+  return clientConfig;
 };

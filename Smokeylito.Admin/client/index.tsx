@@ -6,6 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 ReactDOM.render(
-      <Hello name="Fredrik" />,
+      <Hello name="Joh" />,
     document.getElementById('root') as HTMLElement
   );

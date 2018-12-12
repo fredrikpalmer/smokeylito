@@ -11,9 +11,12 @@ const distFolder = path.resolve(__dirname, '../public');
 const app = new Koa();
 const router = new Router();
 
-router.get("/", (ctx, next) =>{
+const home = (ctx: any, next: any) => {
     ctx.type = 'html';
-    ctx.body = fs.createReadStream(`${distFolder}/index.html`);});
+    ctx.body = fs.createReadStream(`${distFolder}/index.html`);
+}
+
+router.get("/", home);
 
 app
   .use(logger())
