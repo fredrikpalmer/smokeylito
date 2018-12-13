@@ -3,7 +3,7 @@ var webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlAssetNameReplacerPlugin = require('./utilities/html-assetname-replacer-plugin');
 
 module.exports = (env, argv) => {
   console.log('Building client for: ' + argv.mode);
@@ -12,7 +12,7 @@ module.exports = (env, argv) => {
     target: 'node',
     devtool: argv.mode === 'production' ? 'source-map' : 'eval-source-map',
     entry: {
-      server: './src/server.ts',
+      server: './server/server.ts',
     },
     plugins: [
       new webpack.AutomaticPrefetchPlugin(),
@@ -50,16 +50,6 @@ module.exports = (env, argv) => {
         chunks: 'all',
       },
     },
-    plugins: [
-      new webpack.AutomaticPrefetchPlugin(),
-      new MiniCssExtractPlugin({
-        filename: argv.mode === 'production' ? '[name].[hash].css' : '[name].css',
-      }),
-      new HtmlWebpackPlugin({  // Also generate a test.html
-        filename: '../index.html',
-        template: './public/index.html'
-      })
-    ],
     module: {
       rules: [
         {
@@ -78,6 +68,12 @@ module.exports = (env, argv) => {
       filename: argv.mode === 'production' ? '[name].[hash].js' : '[name].js',
       path: path.resolve(__dirname, './public/dist')
     },
+    plugins: [
+      new webpack.AutomaticPrefetchPlugin(),
+      new MiniCssExtractPlugin({
+        filename: argv.mode === 'production' ? '[name].[hash].css' : '[name].css',
+      }),
+    ],
   };
 
   if(env && env.analyze){
@@ -85,10 +81,14 @@ module.exports = (env, argv) => {
   }
 
   if(argv.mode === 'production'){
-    clientConfig.plugins.push(new UglifyJsPlugin({
+    clientConfig.plugins.push(
+      new UglifyJsPlugin({
       sourceMap: true
-    }));
+      }),
+      new HtmlAssetNameReplacerPlugin()
+    );
   }
 
   return [serverConfig, clientConfig];
 };
+
