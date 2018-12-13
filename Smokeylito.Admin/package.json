@@ -44,10 +44,10 @@
   },
   "scripts": {
     "start": "yarn serve",
-    "build": "yarn build:server && webpack --mode=development",
-    "build:prod": "yarn build:server && yarn build:client --mode=production",
+    "build": "webpack --mode=development",
+    "build:prod": "webpack --mode=production",
     "build:server": "tsc",
-    "build:client": "webpack",
+    "build:client": "webpack --env.clientOnly=true",
     "hot": "webpack-dev-server --hotOnly",
     "serve": "node dist/server.js",
     "watch-node": "nodemon dist/server.js",

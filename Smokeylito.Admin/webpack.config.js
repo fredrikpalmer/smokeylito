@@ -8,6 +8,36 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = (env, argv) => {
   console.log('Building client for: ' + argv.mode);
 
+  const serverConfig =  {
+    target: 'node',
+    devtool: argv.mode === 'production' ? 'source-map' : 'eval-source-map',
+    entry: {
+      server: './src/server.ts',
+    },
+    plugins: [
+      new webpack.AutomaticPrefetchPlugin(),
+    ],
+    module: {
+      rules: [
+        {
+          test: /\.ts$/,
+          exclude: /node_modules/,
+          use: 'ts-loader'
+        },
+      ]
+    },
+    resolve: {
+      extensions: [ '.tsx', '.ts', '.js' ],
+    },
+    output: {
+      filename: '[name].js',
+      path: path.resolve(__dirname, './dist')
+    },
+    node:{
+      __dirname: false
+    }
+  };
+
   const clientConfig =  {
     devtool: argv.mode === 'production' ? 'source-map' : 'eval-source-map',
     entry: {
@@ -60,5 +90,5 @@ module.exports = (env, argv) => {
     }));
   }
 
-  return clientConfig;
+  return [serverConfig, clientConfig];
 };
