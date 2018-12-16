@@ -17,6 +17,7 @@ function HtmlAssetNameReplacerPlugin(options){
 
     const html = fs.readFileSync(self.options.fileName, "utf8");
     let processedHtml = html;
+    let hasProcessed = false;
 
     compiler.hooks.watchRun.tap('html-assetname-replacer-plugin', function(stats){
       console.log('html-assetname-replacer-plugin: watching for changes');
@@ -29,8 +30,12 @@ function HtmlAssetNameReplacerPlugin(options){
     });
 
     compiler.hooks.done.tap('html-assetname-replacer-plugin', function(stats){
+      if(hasProcessed){
+        return;
+      }
+      
       console.log('Replacing asset names in: ' + self.options.fileName);
-  
+
       stats.compilation.chunks.forEach(chunk => {
         chunk.files.forEach(file => {
           if(file.endsWith('.css')){
@@ -47,6 +52,8 @@ function HtmlAssetNameReplacerPlugin(options){
       });
   
       fs.writeFileSync(self.options.fileName, processedHtml);
+
+      hasProcessed = true;
     });
     
   }
