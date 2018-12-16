@@ -16,13 +16,10 @@ function HtmlAssetNameReplacerPlugin(options){
     const self = this;
 
     const html = fs.readFileSync(self.options.fileName, "utf8");
-    let processedHtml = '';
-    let processHtml = true;
+    let processedHtml = html;
 
     compiler.hooks.watchRun.tap('html-assetname-replacer-plugin', function(stats){
       console.log('html-assetname-replacer-plugin: watching for changes');
-      
-      processHtml = processedHtml === '';
     });
 
     compiler.hooks.watchClose.tap('html-assetname-replacer-plugin', function(stats){
@@ -34,18 +31,16 @@ function HtmlAssetNameReplacerPlugin(options){
     compiler.hooks.done.tap('html-assetname-replacer-plugin', function(stats){
       console.log('Replacing asset names in: ' + self.options.fileName);
   
-      if(!processHtml) {
-        return;
-      }
-
       stats.compilation.chunks.forEach(chunk => {
         chunk.files.forEach(file => {
           if(file.indexOf('.css') !== -1){
-            processedHtml = html.replace('dist/' + chunk.name + '.css', self.options.src + file);
+            processedHtml = processedHtml.replace('dist/' + chunk.name + '.css', self.options.src + file);
           }
   
           if(file.indexOf('.js') !== -1){
-            processedHtml = html.replace('dist/' + chunk.name + '.js', self.options.src + file);
+            console.log('Replacing assetname: ' + 'dist/' + chunk.name + '.js' + ' with: ' + self.options.src + file)
+
+            processedHtml = processedHtml.replace('dist/' + chunk.name + '.js', self.options.src + file);
           }
         });
       });
