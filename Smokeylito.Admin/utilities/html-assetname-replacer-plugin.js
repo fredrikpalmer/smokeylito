@@ -33,12 +33,13 @@ function HtmlAssetNameReplacerPlugin(options){
   
       stats.compilation.chunks.forEach(chunk => {
         chunk.files.forEach(file => {
-          if(file.indexOf('.css') !== -1){
-            processedHtml = processedHtml.replace('dist/' + chunk.name + '.css', self.options.src + file);
+          if(file.endsWith('.css')){
+            console.log('Injecting asset: ' + self.options.src + file);
+            processedHtml = processedHtml.replace('</head>', '<link href="' + self.options.src + file + '" rel="stylesheet">\r\n</head>');
           }
   
-          if(file.indexOf('.js') !== -1){
-            console.log('Replacing assetname: ' + 'dist/' + chunk.name + '.js' + ' with: ' + self.options.src + file)
+          if(file.endsWith('.js')){
+            console.log('Replacing assetname: ' + 'dist/' + chunk.name + '.js' + ' with: ' + self.options.src + file);
 
             processedHtml = processedHtml.replace('dist/' + chunk.name + '.js', self.options.src + file);
           }
@@ -47,6 +48,7 @@ function HtmlAssetNameReplacerPlugin(options){
   
       fs.writeFileSync(self.options.fileName, processedHtml);
     });
+    
   }
 
   module.exports = HtmlAssetNameReplacerPlugin;
