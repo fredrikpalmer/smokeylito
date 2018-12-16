@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root'
 import * as React from 'react';
 
 export interface Props {
@@ -25,7 +26,7 @@ function Hello({ name, enthusiasmLevel = 1, onIncrement, onDecrement }: Props) {
   );
 }
 
-export default Hello;
+export default hot(Hello);
 
 // helpers
 

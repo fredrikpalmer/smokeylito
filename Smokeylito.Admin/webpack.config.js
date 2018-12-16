@@ -1,12 +1,12 @@
 const path = require('path');
-var webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const HtmlAssetNameReplacerPlugin = require('./utilities/html-assetname-replacer-plugin');
 
 module.exports = (env, argv) => {
-  console.log('Building client for: ' + argv.mode);
+  console.log('Building server & client for: ' + argv.mode);
 
   const serverConfig =  {
     target: 'node',
@@ -14,9 +14,9 @@ module.exports = (env, argv) => {
     entry: {
       server: './server/server.ts',
     },
-    plugins: [
-      new webpack.AutomaticPrefetchPlugin(),
-    ],
+    // plugins: [
+
+    // ],
     module: {
       rules: [
         {
@@ -57,8 +57,14 @@ module.exports = (env, argv) => {
           exclude: /node_modules/,
           use: 'ts-loader'
         },
-        { test: /\.less$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'] }, // compiles Less to CSS 
-        { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader'] },
+        { 
+          test: /\.less$/, 
+          use: [
+            argv.mode === 'production' ? MiniCssExtractPlugin.loader : 'style-loader', 
+            'css-loader', 
+            'less-loader'
+          ] 
+        },
       ]
     },
     resolve: {
@@ -66,12 +72,15 @@ module.exports = (env, argv) => {
     },
     output: {
       filename: argv.mode === 'production' ? '[name].[hash].js' : '[name].js',
-      path: path.resolve(__dirname, './public/dist')
+      path: path.resolve(__dirname, './public/dist'),
     },
     plugins: [
-      new webpack.AutomaticPrefetchPlugin(),
+      new CleanWebpackPlugin(['./public/dist']),
       new MiniCssExtractPlugin({
         filename: argv.mode === 'production' ? '[name].[hash].css' : '[name].css',
+      }),
+      new HtmlAssetNameReplacerPlugin({
+        hot: argv.hot
       }),
     ],
   };
@@ -85,7 +94,6 @@ module.exports = (env, argv) => {
       new UglifyJsPlugin({
       sourceMap: true
       }),
-      new HtmlAssetNameReplacerPlugin()
     );
   }
 
