@@ -75,7 +75,6 @@ module.exports = (env, argv) => {
       path: path.resolve(__dirname, './public/dist'),
     },
     plugins: [
-      new CleanWebpackPlugin(['./public/dist']),
       new MiniCssExtractPlugin({
         filename: argv.mode === 'production' ? '[name].[hash].css' : '[name].css',
       }),
@@ -87,6 +86,10 @@ module.exports = (env, argv) => {
 
   if(env && env.analyze){
     clientConfig.plugins.push(new BundleAnalyzerPlugin());
+  }
+
+  if(!argv.hot){
+    clientConfig.plugins.push(new CleanWebpackPlugin(['./public/dist']));
   }
 
   if(argv.mode === 'production'){
