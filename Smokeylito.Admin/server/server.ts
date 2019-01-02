@@ -36,9 +36,7 @@ app
   .use(router.routes())
   .use(router.allowedMethods());
 
-
-let port = process.env.PORT || Number(process.argv[2]) || 3000;
-port = (typeof port === "number") ? port : 3000;
+let port = Number(process.env.PORT) || Number(process.argv[2]) || 3000;
 app.listen(port);
 
 console.log('Listening on http://localhost:' + port);
