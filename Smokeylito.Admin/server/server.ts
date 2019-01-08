@@ -19,15 +19,15 @@ const home = (ctx: any, next: any) => {
 
 router.get("/", home);
 
-const smoketests = async (ctx: any, next: any) => {
-  // const client = await MongoClient.connect('mongodb://localhost:27017');
-  // const list = await client.db('smoketest').collection('services').find().toArray();
+const targetApplications = async (ctx: any, next: any) => {
+  const client = await MongoClient.connect('mongodb://admin:admin123@mongod-0.mongodb-service,mongod-1.mongodb-service,mongod-0.mongodb-service:27017/?replicaSet=MainRepSet');
+  const list = await client.db('smoketest').collection('targetApplications').find().toArray();
 
   ctx.type = 'application/json';
-  ctx.body = JSON.stringify([]);
+  ctx.body = JSON.stringify(list);
 }
 
-router.get("/smoketests", smoketests)
+router.get("/targetApplications", targetApplications);
 
 app
   .use(logger())

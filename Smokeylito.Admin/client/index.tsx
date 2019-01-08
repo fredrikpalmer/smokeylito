@@ -1,21 +1,22 @@
-import * as Promise from 'bluebird';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import Hello from './App';
 import 'bootstrap';
 import './styles/index.less';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import App from './App';
 
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import { requestSmokeTests } from './reducers/smoketest-reducer';
-import {ApplicationState} from '../models/application-state';
-import { SmokeTestAction } from './actions/SmokeTestAction';
+import configureStore from './store/configureStore';
 
-const store = createStore<ApplicationState, SmokeTestAction, {}, {}>(requestSmokeTests);
+const store = configureStore({ 
+  smokeTest: {
+    targets: [],
+    isFetching: false,
+  }
+ });
 
 ReactDOM.render(
       <Provider store={store}>
-        <Hello dispatch={store.dispatch} />
+        <App />
       </Provider>,
     document.getElementById('root') as HTMLElement
   );

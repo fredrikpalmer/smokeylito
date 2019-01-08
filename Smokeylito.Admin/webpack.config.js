@@ -11,6 +11,7 @@ module.exports = (env, argv) => {
   const serverConfig =  {
     target: 'node',
     devtool: argv.mode === 'production' ? 'source-map' : 'eval-source-map',
+    stats: { warnings: false },
     entry: {
       server: './server/server.ts',
     },
@@ -88,7 +89,7 @@ module.exports = (env, argv) => {
     clientConfig.plugins.push(new BundleAnalyzerPlugin());
   }
 
-  if(!argv.hot){
+  if(!argv.hot && argv.mode === 'development'){
     clientConfig.plugins.push(new CleanWebpackPlugin(['./public/dist']));
   }
 

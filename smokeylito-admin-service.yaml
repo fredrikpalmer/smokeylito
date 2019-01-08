@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: smokeylito-admin
-        image: fredrikpalmer/smokeylito-admin:1
+        image: fredrikpalmer/smokeylito-admin:latest
         ports:
         - containerPort: 3000
 ---

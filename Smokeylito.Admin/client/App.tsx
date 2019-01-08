@@ -1,15 +1,15 @@
 import { hot } from 'react-hot-loader/root'
 import * as React from 'react';
-import * as actions from './actions/SmokeTestAction';
+import * as actions from './actions/TargetApplications';
 import { ApplicationState } from '../models/application-state';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { Dispatch, bindActionCreators } from 'redux';
 import { TargetApplication } from '../models/target-application';
 
 export interface Props {
-  targets: TargetApplication[];
-  isFetching: boolean;
-  dispatch: Dispatch;
+  targets?: TargetApplication[];
+  isFetching?: boolean; 
+  requestTargetApplications?: any
 }
 
 class App extends React.Component<Props>{
@@ -17,9 +17,13 @@ class App extends React.Component<Props>{
     super(props)
   }
 
-  componentDidMount() {
-    actions.fetchSmokeTests();
-}
+  componentWillMount() {
+    this.props.requestTargetApplications();
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    return;
+  }
 
   render(){ 
       return(
@@ -59,17 +63,11 @@ class App extends React.Component<Props>{
 
 
 export function mapStateToProps(state: ApplicationState) {
-  const { targets } = state || {targets: []};
-  return {
-    targets: targets || [],
-    isFetching: true
-  };
+  return state.smokeTest;
 }
 
 export function mapDispatchToProps(dispatch: Dispatch<actions.SmokeTestAction>) {
-  return {
-    requestSmokeTests: () => dispatch(actions.requestSmokeTests()),
-  };
+  return bindActionCreators({...actions}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(hot(App));
