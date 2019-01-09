@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -6,41 +7,18 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const HtmlAssetNameReplacerPlugin = require('./utilities/html-assetname-replacer-plugin');
 
 module.exports = (env, argv) => {
-  console.log('Building server & client for: ' + argv.mode);
-
-  const serverConfig =  {
-    target: 'node',
-    devtool: argv.mode === 'production' ? 'source-map' : 'eval-source-map',
-    stats: { warnings: false },
-    entry: {
-      server: './server/server.ts',
-    },
-    // plugins: [
-
-    // ],
-    module: {
-      rules: [
-        {
-          test: /\.ts$/,
-          exclude: /node_modules/,
-          use: 'ts-loader'
-        },
-      ]
-    },
-    resolve: {
-      extensions: [ '.tsx', '.ts', '.js' ],
-    },
-    output: {
-      filename: '[name].js',
-      path: path.resolve(__dirname, './dist')
-    },
-    node:{
-      __dirname: false
-    }
-  };
+  console.log('Building client for: ' + argv.mode);
 
   const clientConfig =  {
     devtool: argv.mode === 'production' ? 'source-map' : 'eval-source-map',
+    devServer: {
+      contentBase: './public',
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+        "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+      }
+    },
     entry: {
       index: './client/index.tsx',
     },
@@ -74,6 +52,7 @@ module.exports = (env, argv) => {
     output: {
       filename: argv.mode === 'production' ? '[name].[hash].js' : '[name].js',
       path: path.resolve(__dirname, './public/dist'),
+      publicPath: 'http://localhost:8080/public/dist/'
     },
     plugins: [
       new MiniCssExtractPlugin({
@@ -101,6 +80,6 @@ module.exports = (env, argv) => {
     );
   }
 
-  return [serverConfig, clientConfig];
+  return clientConfig;
 };
 

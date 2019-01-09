@@ -34,6 +34,7 @@
     "@types/react-hot-loader": "^4.1.0",
     "@types/react-redux": "^6.0.11",
     "@types/redux-thunk": "^2.1.0",
+    "@types/webpack-env": "^1.13.6",
     "clean-webpack-plugin": "^1.0.0",
     "css-loader": "^2.0.0",
     "less": "^3.9.0",
@@ -50,14 +51,13 @@
     "webpack-dev-server": "^3.1.10"
   },
   "scripts": {
-    "start": "yarn serve",
-    "build": "webpack --mode=development",
+    "start": "yarn hot:server",
+    "build:client": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
+    "hot:client": "webpack-dev-server --mode=development --hot",
     "build:server": "tsc",
-    "build:client": "webpack --env.clientOnly=true",
-    "hot": "webpack-dev-server --mode=development --hot",
-    "serve": "node dist/server.js",
-    "watch-node": "nodemon dist/server.js",
-    "watch-ts": "tsc -w"
+    "build:watch": "tsc -w",
+    "hot:server": "nodemon dist/server.js",
+    "serve": "node dist/server.js"
   }
 }

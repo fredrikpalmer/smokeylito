@@ -1,4 +1,3 @@
-import { hot } from 'react-hot-loader/root'
 import * as React from 'react';
 import * as actions from './actions/TargetApplications';
 import { ApplicationState } from '../models/application-state';
@@ -70,4 +69,4 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.SmokeTestAction>) 
   return bindActionCreators({...actions}, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(hot(App));
+export default connect(mapStateToProps, mapDispatchToProps)(App);
