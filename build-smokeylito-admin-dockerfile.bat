@@ -1,0 +1,1 @@
+docker build -t fredrikpalmer/smokeylito-admin:latest .

@@ -7,6 +7,7 @@ COPY /Smokeylito.Admin/yarn.lock /Smokeylito.Admin/package.json ./
 RUN yarn
 
 COPY /Smokeylito.Admin/ ./
+RUN yarn build:server
 RUN yarn build:prod
 
 FROM node:10
