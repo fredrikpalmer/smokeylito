@@ -6,7 +6,7 @@ function HtmlAssetNameReplacerPlugin(options){
     const defaultOptions = {
       fileName: './public/index.html',
       hot: false,
-      src: options.hot ? 'http://localhost:8080/dist/' : ''
+      src: options.hot ? 'http://localhost:8080/dist/' : 'dist/'
     };
   
     self.options = Object.assign(defaultOptions, options || {});

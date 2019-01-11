@@ -62,6 +62,7 @@
     "supertest": "^3.3.0",
     "terser-webpack-plugin": "^1.2.1",
     "ts-loader": "^5.3.1",
+    "ts-node": "^7.0.1",
     "typescript": "^3.2.2",
     "webpack": "^4.27.1",
     "webpack-bundle-analyzer": "^3.0.3",
@@ -81,7 +82,7 @@
     "build:server": "rimraf ./dist && tsc",
     "build:watch:server": "yarn build:server -w",
     "hot:server": "nodemon dist/server.js",
-    "test:server": "mocha ./dist/*.js",
-    "test:watch:server": "mocha -w ./dist/*.js"
+    "test:server": "mocha --require ts-node/register ./server/*.ts",
+    "test:watch:server": "yarn test:server --watch --watch-extensions ts"
   }
 }
