@@ -1,5 +1,5 @@
 import * as constants from '../constants';
-import { TargetApplication } from '../../models/target-application';
+import { TargetApplication } from '../../shared/target-application';
 import { Dispatch } from 'redux';
 
 export interface RequestTargetApplications {

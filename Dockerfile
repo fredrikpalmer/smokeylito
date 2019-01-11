@@ -7,8 +7,12 @@ COPY /Smokeylito.Admin/yarn.lock /Smokeylito.Admin/package.json ./
 RUN yarn
 
 COPY /Smokeylito.Admin/ ./
-RUN yarn build:server
 RUN yarn build:prod
+
+FROM node:10
+WORKDIR /test/
+COPY --from=build /src/app/ ./
+RUN yarn test
 
 FROM node:10
 WORKDIR /src/app/

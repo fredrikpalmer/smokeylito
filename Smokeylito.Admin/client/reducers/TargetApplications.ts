@@ -1,4 +1,4 @@
-import { ApplicationState } from '../../models/application-state';
+import { ApplicationState } from '../../shared/application-state';
 import { RECEIVE_SMOKETEST_TARGETAPPLICATIONS, REQUEST_SMOKETEST_TARGETAPPLICATIONS } from '../constants';
 
 export function targetApplicationsReducer(state: ApplicationState, action: any): ApplicationState {

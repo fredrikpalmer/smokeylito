@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as actions from './actions/TargetApplications';
-import { ApplicationState } from '../models/application-state';
+import { ApplicationState } from '../shared/application-state';
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
-import { TargetApplication } from '../models/target-application';
+import { TargetApplication } from '../shared/target-application';
 
 export interface Props {
   targets?: TargetApplication[];

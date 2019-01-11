@@ -30,14 +30,20 @@ const targetApplications = async (ctx: any, next: any) => {
 router.get("/targetApplications", targetApplications);
 
 app
-  .use(logger())
   .use(compress())
   .use(serve(distFolder))
   .use(router.routes())
   .use(router.allowedMethods());
 
 let port = Number(process.env.PORT) || Number(process.argv[2]) || 3000;
-app.listen(port);
 
-console.log('Listening on http://localhost:' + port);
+if(!module.parent) {
+  app
+    .use(logger())
+    .listen(port);
+
+  console.log('Listening on http://localhost:' + port);
+}
+
+export default app;
 

@@ -6,7 +6,7 @@ function HtmlAssetNameReplacerPlugin(options){
     const defaultOptions = {
       fileName: './public/index.html',
       hot: false,
-      src: options.hot ? 'http://localhost:8080/public/dist/' : 'dist/'
+      src: options.hot ? 'http://localhost:8080/dist/' : ''
     };
   
     self.options = Object.assign(defaultOptions, options || {});
@@ -18,7 +18,7 @@ function HtmlAssetNameReplacerPlugin(options){
     const html = fs.readFileSync(self.options.fileName, "utf8");
     let processedHtml = html;
     let hasProcessed = false;
-
+ 
     compiler.hooks.watchRun.tap('html-assetname-replacer-plugin', function(stats){
       console.log('html-assetname-replacer-plugin: watching for changes');
     });
