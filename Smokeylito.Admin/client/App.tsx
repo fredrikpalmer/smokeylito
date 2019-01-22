@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as actions from './actions/TargetApplications';
+import * as actions from './actions/GetTargetApplications';
 import { ApplicationState } from '../shared/application-state';
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
@@ -32,10 +32,10 @@ class App extends React.Component<Props>{
         </nav>
         <div className="container">
           <div className="row" style={{ padding: "20px 0px" }}>
-            <div className="col-lg-8">
+            <div className="col-lg-9">
               <h1 className="page-header">Targetapplications</h1>
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-3">
               <button className="btn btn-primary pull-right" data-toggle="modal" data-target=".modal">
                 Add target
               </button>
@@ -56,7 +56,7 @@ class App extends React.Component<Props>{
                 <tbody>
                   { this.props.targets && this.props.targets.map(x => {
                       return (
-                        <tr>
+                        <tr key={x.applicationName}>
                           <th scope="row">1</th>
                           <td>{x.applicationName}</td>
                           <td>{x.baseUrl}</td>

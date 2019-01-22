@@ -1,5 +1,5 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
-import { targetApplicationsReducer } from '../reducers/TargetApplications';
+import { targetApplicationsReducer } from '../reducers/GetTargetApplications';
 import thunk from 'redux-thunk';
 
 declare global{
