@@ -6,6 +6,8 @@ import serve from "koa-static";
 import compress from "koa-compress";
 import Router from "koa-router";
 import MongoClient from 'mongodb';
+import { TargetApplication } from '../shared/target-application';
+import { SmokeTestScenario } from '../shared/smoketest-scenario';
 
 const distFolder = path.resolve(__dirname, '../public');
 
@@ -20,8 +22,19 @@ const home = (ctx: any, next: any) => {
 router.get("/", home);
 
 const targetApplications = async (ctx: any, next: any) => {
-  const client = await MongoClient.connect('mongodb://admin:admin123@mongod-0.mongodb-service,mongod-1.mongodb-service,mongod-0.mongodb-service:27017/?replicaSet=MainRepSet');
-  const list = await client.db('smoketest').collection('targetApplications').find().toArray();
+  // const client = await MongoClient.connect('mongodb://admin:admin123@mongod-0.mongodb-service,mongod-1.mongodb-service,mongod-0.mongodb-service:27017/?replicaSet=MainRepSet');
+  // const list = await client.db('smoketest').collection('targetApplications').find().toArray();
+
+  const list = [
+    new TargetApplication(
+      'Smokeylito admin',
+      'http://localhost:3000',
+      null,
+      new Array<SmokeTestScenario>(
+        new SmokeTestScenario()
+      )
+    )
+  ];
 
   ctx.type = 'application/json';
   ctx.body = JSON.stringify(list);

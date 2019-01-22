@@ -1,8 +1,15 @@
 import {SmokeTestScenario} from './smoketest-scenario';
 
 export class TargetApplication {
-    name: string;
+    applicationName: string;
     baseUrl: string;
-    params: Map<string, string>;
-    tests: SmokeTestScenario[];
+    queryString?: string;
+    smokeTests: SmokeTestScenario[];
+
+    constructor(applicationName?: string, baseUrl?: string, queryString?: string, smokeTests?: SmokeTestScenario[]){
+        this.applicationName = applicationName || '';
+        this.baseUrl = baseUrl || '';
+        this.queryString = queryString;
+        this.smokeTests = smokeTests || new Array<SmokeTestScenario>();
+    }
 }

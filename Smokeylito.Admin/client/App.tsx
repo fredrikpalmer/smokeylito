@@ -28,12 +28,47 @@ class App extends React.Component<Props>{
       return(
       <div>
         <nav className="navbar navbar-light bg-light">
-          <span className="navbar-brand mb-0 h1">Navbar</span>
+          <a href="/" className="navbar-brand mb-0 h1">Smokeylito Admin</a>
         </nav>
         <div className="container">
-          <button className="btn btn-primary" data-toggle="modal" data-target=".modal">
-            Add target app
-          </button>
+          <div className="row" style={{ padding: "20px 0px" }}>
+            <div className="col-lg-8">
+              <h1 className="page-header">Targetapplications</h1>
+            </div>
+            <div className="col-lg-4">
+              <button className="btn btn-primary pull-right" data-toggle="modal" data-target=".modal">
+                Add target
+              </button>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-lg-12">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">ApplicationName</th>
+                    <th scope="col">BaseUrl</th>
+                    <th scope="col">QueryString</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  { this.props.targets && this.props.targets.map(x => {
+                      return (
+                        <tr>
+                          <th scope="row">1</th>
+                          <td>{x.applicationName}</td>
+                          <td>{x.baseUrl}</td>
+                          <td>{x.queryString}</td>
+                        </tr>
+                      )
+                    })
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
 
         <div className="modal" tabIndex={-1} role="dialog">
