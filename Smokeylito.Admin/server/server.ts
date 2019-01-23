@@ -48,7 +48,7 @@ app
   .use(router.routes())
   .use(router.allowedMethods());
 
-let port = Number(process.env.PORT) || Number(process.argv[2]) || 3000;
+let port = 3000;
 
 if(!module.parent) {
   app

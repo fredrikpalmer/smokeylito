@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const safePostCssParser = require('postcss-safe-parser');
@@ -14,8 +13,9 @@ module.exports = (env, argv) => {
 
   const isEnvProduction = argv.mode === 'production';
   const isEnvDevelopment = argv.mode === 'development';
+  const when = (evaluation, plugins) => evaluation && [...plugins] || [];
 
-  const clientConfig =  {
+  return {
     mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development', 
     devtool: isEnvProduction ? 'source-map' : isEnvDevelopment && 'eval-source-map',
     devServer: {
@@ -110,18 +110,14 @@ module.exports = (env, argv) => {
         fileName: 'asset-manifest.json',
         publicPath: '/',
       }),
+      ...when(isEnvProduction && env && env.analyse, [new BundleAnalyzerPlugin()]),
     ],
     performance: false
   };
 
-  if(env && env.analyze){
-    clientConfig.plugins.push(new BundleAnalyzerPlugin());
-  }
+  // if(env && env.analyze){
+  //   clientConfig.plugins.push(new BundleAnalyzerPlugin());
+  // }
 
-  if(!argv.hot && isEnvDevelopment){
-    clientConfig.plugins.push(new CleanWebpackPlugin(['./public/dist']));
-  }
-
-  return clientConfig;
 };
 
