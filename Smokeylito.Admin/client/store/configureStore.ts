@@ -1,6 +1,7 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
-import { targetApplicationsReducer } from '../reducers/GetTargetApplications';
 import thunk from 'redux-thunk';
+import { targetApplicationsReducer } from '../reducers/targetApplicationsReducer';
+import { loaderReducer } from "../reducers/loaderReducer";
 
 declare global{
     interface Window{
@@ -8,10 +9,11 @@ declare global{
     }
 }
 
-export default function configureStore(initialState: any) {
+export default function configureStore() {
   const reducers = {
-    smokeTest: targetApplicationsReducer
-  };
+    targets: targetApplicationsReducer,
+    loader: loaderReducer
+  }
 
   const middleware = [
     thunk,
@@ -30,7 +32,6 @@ export default function configureStore(initialState: any) {
 
   return createStore(
     rootReducer,
-    initialState,
     compose(applyMiddleware(...middleware), ...enhancers)
   );
 }

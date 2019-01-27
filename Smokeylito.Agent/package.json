@@ -1,0 +1,18 @@
+{
+  "name": "Smokeylito.Agent",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Fredrik Palmér",
+  "license": "MIT",
+  "dependencies": {
+    "chromedriver": "^2.45.0",
+    "nightwatch": "^1.0.18"
+  },
+  "devDependencies": {
+    "@types/nightwatch": "^0.9.11",
+    "typescript": "^3.2.4"
+  },
+  "scripts": {
+    "start": "nightwatch ./tests/lab.js"
+  }
+}

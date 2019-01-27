@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
@@ -5,7 +6,7 @@ module.exports = {
     devtool: 'source-map',
     stats: { warnings: false },
     entry: {
-        server: './server/server.ts',
+        server: [ 'webpack/hot/poll?1000', './server/server.ts' ],
     },
     module: {
         rules: [
@@ -23,6 +24,9 @@ module.exports = {
         filename: '[name].js',
         path: path.resolve(__dirname, './dist')
     },
+    plugins:[
+        new webpack.HotModuleReplacementPlugin()
+    ],
     node:{
         __dirname: false
     }

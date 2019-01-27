@@ -6,8 +6,8 @@ import serve from "koa-static";
 import compress from "koa-compress";
 import Router from "koa-router";
 import MongoClient from 'mongodb';
-import { TargetApplication } from '../shared/target-application';
-import { SmokeTestScenario } from '../shared/smoketest-scenario';
+import { TargetApplication } from '../models/target-application';
+import { SmokeTestScenario } from '../models/smoketest-scenario';
 
 const distFolder = path.resolve(__dirname, '../public');
 
